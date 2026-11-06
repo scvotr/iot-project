@@ -4,9 +4,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 
-
-
 function App() {
+  //! Автоматически определяем текущий хост (IP вашей ВМ или localhost при разработке)
+  const currentHost = window.location.host;
+  // console.log("🚀 ~ App ~ currentHost:", currentHost)
+
   // Хранилище для датчиков. Ключ — MAC-адрес, значение — данные датчика
   const [sensors, setSensors] = useState({});
   const [status, setStatus] = useState('Подключение...');
@@ -41,6 +43,12 @@ function App() {
     // window.location.host автоматически подставит IP вашей ВМ (10.x.x.x)
     // const socket = new WebSocket(`ws://${window.location.host}/api/`);
     const socket = new WebSocket('ws://localhost:3000/api/ws');
+                                  // ws://localhost:5173/api/ws  port! 5173
+    // Используем window.location.protocol, чтобы автоматически менять ws:// на wss:// при наличии SSL
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    console.log("🚀 ~ App ~ wsProtocol:", wsProtocol)
+    const socket2 = new WebSocket(`${wsProtocol}//${currentHost}/api/ws`);
+    console.log("🚀 ~ App ~ socket2:", socket2)
 
     socket.onopen = () => {
       setStatus('Подключено (Live)');
