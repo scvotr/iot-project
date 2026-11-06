@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 // Внутренние настройки сервера
 const PORT = 3000;
-const HOST = 'localhost';
+const HOST = '127.0.0.1';
 
 // =========================================================================
 // 1. ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ SQLITE3
@@ -129,7 +129,8 @@ wss.on('connection', (wsClient) => {
 // 4. ПОДКЛЮЧЕНИЕ К MQTT-БРОКЕРУ И ГЛАВНАЯ ЛОГИКА
 // =========================================================================
 // Подключаемся к брокеру Mosquitto, работающему локально на этой же машине
-const mqttClient = mqtt.connect('mqtt://localhost:1883');
+// const mqttClient = mqtt.connect('mqtt://localhost:1883');
+const mqttClient = mqtt.connect(`mqtt://${HOST}:1883`); 
 
 mqttClient.on('connect', () => {
     console.log('📡 Node.js успешно установил связь с локальным MQTT-брокером.');
